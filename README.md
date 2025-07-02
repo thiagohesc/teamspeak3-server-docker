@@ -1,36 +1,83 @@
-# TeamSpeak 3 Server Docker
+# 🎧 TeamSpeak 3 + MariaDB com Docker
 
-This repository contains the configuration to run a TeamSpeak 3 server using Docker and MariaDB as the database.
-
-## Overview
-
-The project uses two services:
-- **TeamSpeak 3**: A voice communication server.
-- **MariaDB**: A database to store the TeamSpeak server's information.
-
-Communication between the services is done through a custom Docker network called `teamspeak-net`.
+Este repositório configura um servidor **TeamSpeak 3** com banco de dados **MariaDB** via Docker, com persistência de dados e suporte à licença via variável de ambiente.
 
 ---
 
-## Project Structure
+## ✅ Serviços incluídos
 
-- `teamspeak`: Contains the TeamSpeak 3 server image.
-- `db`: Contains the MariaDB database image.
-- **Volumes**: Persistent data for TeamSpeak and MariaDB is stored in local volumes to ensure data persistence.
-
----
-
-## Prerequisites
-
-1. Install `Docker`.
+- **TeamSpeak 3 Server**
+  - Porta de voz (UDP): `9987`
+  - ServerQuery (Admin CLI): `10011`
+  - Transferência de arquivos: `30033`
+- **MariaDB 10.5**
+  - Porta local: `127.0.0.1:3366 → 3306` (acesso somente local)
 
 ---
 
-## Configuration
+## 📁 Estrutura de arquivos
 
-Before starting the services, configure the environment variables:
+```
+.
+├── docker-compose.yml
+├── .env
+└── data/
+    ├── teamspeak/
+    │   └── data/
+    └── mariadb/
+        └── data/
+```
 
-1. Create a `.env` file in the same directory as `docker-compose.yml` with the following variables:
-   ```env
-   MYSQL_PASSWORD=your_secure_password
-   MYSQL_DATABASE=teamspeak_db
+---
+
+## ⚙️ Como usar
+
+### 1. Crie o arquivo `.env`
+
+```env
+MYSQL_PASSWORD=uma_senha_segura
+MYSQL_DATABASE=teamspeak
+```
+
+### 2. Inicie os containers
+
+```bash
+docker compose up -d
+```
+
+### 3. Acesse o TeamSpeak
+
+- Conecte ao IP do servidor na porta `9987` (padrão)
+- A senha e o token de privilégio aparecerão nos logs:
+  ```bash
+  docker logs -f teamspeak
+  ```
+
+---
+
+## 🔒 Segurança
+
+- O banco MariaDB está acessível **somente localmente** (bind em `127.0.0.1`).
+- A senha do banco está protegida via variáveis de ambiente `.env`.
+- Dados do servidor e banco são persistidos nas pastas `./data`.
+
+---
+
+## 🧼 Encerrando e limpando
+
+```bash
+docker compose down
+```
+
+Para remover também os dados:
+
+```bash
+docker compose down -v
+```
+
+---
+
+## 📚 Referências
+
+- [TeamSpeak Docker Hub](https://hub.docker.com/_/teamspeak)
+- [MariaDB Docker Hub](https://hub.docker.com/_/mariadb)
