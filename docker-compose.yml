@@ -2,6 +2,9 @@ services:
   teamspeak:
     image: teamspeak:latest
     restart: always
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     ports:
       - "9987:9987/udp"
       - "10011:10011"
