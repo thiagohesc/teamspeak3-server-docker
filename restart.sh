@@ -1,5 +1,9 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 set -e
+
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
 
 APP_DIR="/opt/apps/teamspeak3-server-docker"
 
